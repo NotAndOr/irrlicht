@@ -99,6 +99,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>..\..\bin\Win32-VisualStudio\23.SMeshHandling.exe</OutputFile>
@@ -120,6 +121,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>..\..\bin\Win64-VisualStudio\23.SMeshHandling.exe</OutputFile>
@@ -141,6 +143,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CallingConvention>Cdecl</CallingConvention>
@@ -166,6 +169,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CallingConvention>Cdecl</CallingConvention>
