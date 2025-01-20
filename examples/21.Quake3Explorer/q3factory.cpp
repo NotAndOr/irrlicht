@@ -756,14 +756,14 @@ vector3df getGravity ( const c8 * surface )
 
 #include <windows.h>
 
-funcptr_createDevice load_createDevice ( const c8 * filename)
+funcptr_createDevice load_createDevice ( const wchar_t * filename)
 {
-	return (funcptr_createDevice) GetProcAddress ( LoadLibrary ( filename ), "createDevice" );
+	return (funcptr_createDevice) GetProcAddress ( LoadLibraryW ( filename ), "createDevice" );
 }
 
-funcptr_createDeviceEx load_createDeviceEx ( const c8 * filename)
+funcptr_createDeviceEx load_createDeviceEx ( const wchar_t * filename)
 {
-	return (funcptr_createDeviceEx) GetProcAddress ( LoadLibrary ( filename ), "createDeviceEx" );
+	return (funcptr_createDeviceEx) GetProcAddress ( LoadLibraryW ( filename ), "createDeviceEx" );
 }
 
 #else

@@ -2,6 +2,8 @@
 // This file is part of the "Irrlicht Engine".
 // For conditions of distribution and use, see copyright notice in irrlicht.h
 
+#include <locale>
+
 #include "CLogger.h"
 #include "os.h"
 #include "irrString.h"
@@ -67,7 +69,12 @@ namespace irr
 		if (ll < LogLevel)
 			return;
 
-		core::stringc s = text;
+		core::stringc oldLocale(setlocale(LC_CTYPE, NULL));
+		setlocale(LC_CTYPE, "");	// widetringToMultibyte is affected by LC_CTYPE. Filenames seem to need the system-locale.
+		core::stringc s;
+		core::widetringToMultibyte(s, text);
+		setlocale(LC_CTYPE, oldLocale.c_str());
+
 		log(s.c_str(), ll);
 	}
 
@@ -78,8 +85,14 @@ namespace irr
 		if (ll < LogLevel)
 			return;
 
-		core::stringc s1 = text;
-		core::stringc s2 = hint;
+		core::stringc oldLocale(setlocale(LC_CTYPE, NULL));
+		setlocale(LC_CTYPE, "");	// widetringToMultibyte is affected by LC_CTYPE. Filenames seem to need the system-locale.
+		core::stringc s1;
+		core::widetringToMultibyte(s1, text);
+		core::stringc s2;
+		core::widetringToMultibyte(s2, hint);
+		setlocale(LC_CTYPE, oldLocale.c_str());
+
 		log(s1.c_str(), s2.c_str(), ll);
 	}
 
@@ -89,7 +102,12 @@ namespace irr
 		if (ll < LogLevel)
 			return;
 
-		core::stringc s2 = hint;
+		core::stringc oldLocale(setlocale(LC_CTYPE, NULL));
+		setlocale(LC_CTYPE, "");	// widetringToMultibyte is affected by LC_CTYPE. Filenames seem to need the system-locale.
+		core::stringc s2;
+		core::widetringToMultibyte(s2, hint);
+		setlocale(LC_CTYPE, oldLocale.c_str());
+
 		log( text, s2.c_str(), ll);
 	}
 

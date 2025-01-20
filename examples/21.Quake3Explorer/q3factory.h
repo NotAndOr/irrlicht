@@ -115,8 +115,8 @@ vector3df getGravity ( const c8 * surface );
 /*
 	Dynamically load the Irrlicht Library
 */
-funcptr_createDevice load_createDevice ( const c8 * filename);
-funcptr_createDeviceEx load_createDeviceEx ( const c8 * filename);
+funcptr_createDevice load_createDevice ( const wchar_t * filename);
+funcptr_createDeviceEx load_createDeviceEx ( const wchar_t * filename);
 
 
 //! Macro for save Dropping an Element

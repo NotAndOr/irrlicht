@@ -380,9 +380,11 @@ void CGUIFileOpenDialog::pathToStringW(irr::core::stringw& result, const irr::io
 {
 #ifndef _IRR_WCHAR_FILESYSTEM
 	char* oldLocale = setlocale(LC_CTYPE, NULL);
-	setlocale(LC_CTYPE,"");	// multibyteToWString is affected by LC_CTYPE. Filenames seem to need the system-locale.
+	core::stringc oldLocaleKeeper(oldLocale);
+	// multibyteToWString is affected by LC_CTYPE. Filenames seem to need the system-locale.
+	setlocale(LC_CTYPE,"");	// oldLocale is freed and invalid hereafter.
 	core::multibyteToWString(result, p);
-	setlocale(LC_CTYPE, oldLocale);
+	setlocale(LC_CTYPE, oldLocaleKeeper.c_str());
 #else
 	result = p.c_str();
 #endif

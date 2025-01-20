@@ -1504,7 +1504,11 @@ bool CQuake3EventHandler::OnEvent(const SEvent& eve)
 						);
 				path filename ( buf );
 				filename.replace ( '/', '_' );
+# ifndef _IRR_WCHAR_FILESYSTEM
 				printf ( "screenshot : %s\n", filename.c_str() );
+# else
+				wprintf ( L"screenshot : %s\n", filename.c_str() );
+# endif
 				Game->Device->getVideoDriver()->writeImageToFile(image, filename, 100 );
 				image->drop();
 			}
@@ -2124,16 +2128,28 @@ void runGame ( GameData *game )
 */
 int IRRCALLCONV main(int argc, char* argv[])
 {
+	core::stringc oldLocale(setlocale(LC_CTYPE, NULL));
+	setlocale(LC_CTYPE, "");	// multibyteToWString is affected by LC_CTYPE. Filenames seem to need the system-locale.
+	core::stringw w_argv_0;
+	core::multibyteToWString(w_argv_0, argv[0]);
+	core::stringw w_argv_1;
+	core::multibyteToWString(w_argv_1, argv[1]);
+	setlocale(LC_CTYPE, oldLocale.c_str());
+
+#ifndef _IRR_WCHAR_FILESYSTEM
 	path prgname(argv[0]);
+#else
+	path prgname(w_argv_0.c_str());
+#endif
 	GameData game ( deletePathFromPath ( prgname, 1 ) );
 
 	// dynamically load irrlicht
-	const c8 * dllName = argc > 1 ? argv[1] : "irrlicht.dll";
+	const wchar_t * dllName = argc > 1 ? w_argv_1.c_str() : L"irrlicht.dll";
 	game.createExDevice = load_createDeviceEx ( dllName );
 	if ( 0 == game.createExDevice )
 	{
 		game.retVal = 3;
-		printf ( "Could not load %s.\n", dllName );
+		wprintf ( L"Could not load %s.\n", dllName );
 		return game.retVal; // could not load dll
 	}
 

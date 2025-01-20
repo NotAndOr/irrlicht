@@ -34,6 +34,8 @@ outside the string class for explicit use.
 template <typename T, typename TAlloc = irrAllocator<T> >
 class string;
 static size_t multibyteToWString(string<wchar_t>& destination, const char* source, u32 sourceSize);
+static size_t widetringToMultibyte(string<char>& destination, const wchar_t* source, u32 sourceSize);
+
 inline s32 isdigit(s32 c);
 
 enum eLocaleID
@@ -1422,6 +1424,7 @@ public:
 	}
 
 	friend size_t multibyteToWString(string<wchar_t>& destination, const char* source, u32 sourceSize);
+	friend size_t widetringToMultibyte(string<char>& destination, const wchar_t* source, u32 sourceSize);
 
 private:
 
@@ -1515,6 +1518,49 @@ static size_t multibyteToWString(string<wchar_t>& destination, const char* sourc
 	}
 }
 
+static size_t widetringToMultibyte(string<char>& destination, const wchar_t* source, u32 sourceSize)
+{
+	if (sourceSize)
+	{
+		destination.reserve(sourceSize + 1);
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4996)	// 'wcstombs': This function or variable may be unsafe. Consider using mbstowcs_s instead.
+#endif
+		const size_t written = wcstombs(destination.array, source, (size_t)sourceSize);
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+		if (written != (size_t)-1)
+		{
+			destination.used = (u32)written + 1;
+			destination.array[destination.used - 1] = 0;
+		}
+		else
+		{
+			// Likely character which got converted until the invalid character was encountered are in destination now.
+			// And it seems even 0-terminated, but I found no documentation anywhere that this (the 0-termination) is guaranteed :-(
+			destination.clear();
+		}
+		return written;
+	}
+	else
+	{
+		destination.clear();
+		return 0;
+	}
+}
+
+static inline size_t widetringToMultibyte(string<c8>& destination, const core::string<wchar_t>& source)
+{
+	return widetringToMultibyte(destination, source.c_str(), (u32)source.size());
+}
+
+static inline size_t widetringToMultibyte(string<char>& destination, const wchar_t* source)
+{
+	const u32 s = source ? (u32)wcslen(source) : 0;
+	return widetringToMultibyte(destination, source, s);
+}
 
 } // end namespace core
 } // end namespace irr
